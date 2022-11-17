@@ -1,47 +1,39 @@
+import { useState } from 'react';
 import { GlobalStyles } from 'components/GlobalStyles';
-import { Component } from 'react';
+
 import { SearchBar } from './SearchBar/SearchBar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 
-export class App extends Component {
-  state = {
-    searchQuery: '',
-    currentPage: 1,
-  };
 
-  onSearchSubmit = formSearchQuery => {
+export function App() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  
+
+  const onSearchSubmit = formSearchQuery => {
     const formatedSearchQuery = formSearchQuery.trim().toLowerCase();
 
-    if (!formatedSearchQuery || this.state.searchQuery === formatedSearchQuery)
+    if (!formatedSearchQuery || searchQuery === formatedSearchQuery)
       return;
 
-    this.setState({
-      searchQuery: formatedSearchQuery,
-      currentPage: 1,
-    });
+    setSearchQuery(formatedSearchQuery);
+    setCurrentPage(1);
   };
 
-  onLoadMore = () => {
-    this.setState(prevState => ({
-      currentPage: prevState.currentPage + 1,
-    }));
+  const onLoadMore = () => {
+    currentPage(prevCurrentPage => prevCurrentPage + 1);
   };
-
-  render() {
-    const { searchQuery, currentPage } = this.state;
-
     return (
       <>
         <GlobalStyles />
-        <SearchBar onSubmit={this.onSearchSubmit} />
+        <SearchBar onSubmit={onSearchSubmit} />
         <main>
           <ImageGallery
             searchQuery={searchQuery}
             currentPage={currentPage}
-            onLoadMore={this.onLoadMore}
+            onLoadMore={onLoadMore}
           />
         </main>
       </>
     );
   }
-}
